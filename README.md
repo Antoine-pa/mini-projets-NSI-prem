@@ -1,15 +1,15 @@
-[bibliothèque de conversion](test.txt)
+1. [bibliothèque de conversion](test.txt)
 
-[bash](test.txt)
+2. [bash](test.txt)
 
-[gestion de liste d'élève](test.txt)
+3. [gestion de liste d'élève](test.txt)
 
-[jeu de 52 cartes](test.txt)
+4. [jeu de 52 cartes](test.txt)
 
-[matrice](test.txt)
+5. [matrice](test.txt)
 
-[numération](test.txt)
+6. [numération](test.txt)
 
-[norme IEEE](test.txt)
+7. [norme IEEE](test.txt)
 
-[additionneur complet et multiplication](test.txt)
+8. [additionneur complet et multiplication](test.txt)
