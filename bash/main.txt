@@ -1,0 +1,25 @@
+a)
+	création de 100 dossiers:
+	mkdir `seq 1 100`
+
+	supression de 100 dossiers:
+	rm -r `seq 1 100`
+
+b)
+	création d'un fichier texte:
+echo "nsi
+autres mots
+blablablansi
+encorensi
+nsiencore
+autre
+choses" > texte.txt
+	
+	commande d'affichage du nombre de ligne contenant le mot nsi 
+	cat texte.txt | grep "nsi" | wc -l
+
+c)
+	find [dossier] | wc -l
+
+d)
+	mkdir `cat [fichier]`
