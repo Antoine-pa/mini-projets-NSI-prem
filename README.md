@@ -6,7 +6,7 @@
 
 3. [gestion de liste d'élève](test.txt)
 
-4. [jeu de 52 cartes](test.txt)
+4. [jeu de 52 cartes](jeu_52_carte/main.py)
 
 5. [matrice](test.txt)
 
