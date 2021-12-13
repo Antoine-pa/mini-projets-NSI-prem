@@ -1,8 +1,8 @@
 # *Minis projets de NSI*
 
-1. [bibliothèque de conversion](test.txt)
+1. [bibliothèque de conversion](bibliotheque_conversion/main.py)
 
-2. [bash](test.txt)
+2. [bash](bash/main.txt)
 
 3. [gestion de liste d'élève](test.txt)
 
