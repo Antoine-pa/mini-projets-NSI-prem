@@ -11,6 +11,7 @@ range(0, 6) = seq 1 5
 ```sh
 mkdir `seq 1 100`
 ```
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/mkdir_100.PNG" />
 
 ### b) Afficher le nombre de ligne où apparaît un mot :
 
