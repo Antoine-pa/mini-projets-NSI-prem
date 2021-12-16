@@ -6,7 +6,7 @@
 ```sh
 seq 1 10
 ```
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets_NSi/master/seq_command.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/seq_command.PNG" />
 
 ```sh
 mkdir `seq 1 100`
