@@ -3,8 +3,8 @@
 ### a) Crérer 100 répertoires numérotés de 1 à 100 :
 
 #### l'équivalent du range python en bash :
-```sh
-seq 1 10
+```
+range(0, 6) = seq 1 5
 ```
 <img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/seq_command.PNG" />
 
