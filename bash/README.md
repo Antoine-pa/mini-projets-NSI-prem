@@ -11,7 +11,7 @@ mkdir dossier
 
 #### l'équivalent du range python en bash :
 ```
-range(0, 6) = seq 1 5
+range(1, 6) = seq 1 5
 ```
 <img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/seq_command.PNG" />
 
