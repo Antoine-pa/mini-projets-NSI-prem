@@ -4,8 +4,6 @@
 
 #### commande pour créer un dossier :
 
--ue-(u
-
 ```sh
 mkdir dossier
 ```
@@ -40,10 +38,10 @@ choses" > texte.txt
 
 <img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/texte_txt.PNG" />
 
-#### 
+#### commande d'affichage d'un contenu de fichier :
 
 ```sh
-
+cat texte.txt
 ```
 
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
