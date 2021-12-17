@@ -24,6 +24,20 @@ mkdir `seq 1 100`
 
 ## b) Afficher le nombre de ligne où apparaît un mot :
 
+#### on commence d'abord par créer un fichier contenant des mots :
+
+```sh
+echo "nsi
+autres mots
+blablablansi
+encorensi
+nsiencore
+autre
+choses" > texte.txt
+```
+
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/texte_txt.PNG" />
+
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
 ## d) Créer une liste de répertoire contenu dans un fichier texte :
