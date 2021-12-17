@@ -24,7 +24,7 @@ mkdir `seq 1 100`
 
 ## b) Afficher le nombre de ligne où apparaît un mot :
 
-#### on commence d'abord par créer un fichier contenant des mots :
+#### création d'un fichier contenant des mots :
 
 ```sh
 echo "nsi
@@ -37,6 +37,11 @@ choses" > texte.txt
 ```
 
 <img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/texte_txt.PNG" />
+
+```py
+import random
+print("qlq chose")
+```
 
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
