@@ -4,6 +4,8 @@
 
 #### commande pour créer un dossier :
 
+-ue-(u
+
 ```sh
 mkdir dossier
 ```
@@ -38,9 +40,10 @@ choses" > texte.txt
 
 <img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/texte_txt.PNG" />
 
-```py
-import random
-print("qlq chose")
+#### 
+
+```sh
+
 ```
 
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
