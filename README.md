@@ -2,7 +2,7 @@
 
 1. [bibliothèque de conversion](bibliotheque_conversion/main.py)
 
-2. [bash](bash/main.txt)
+2. [bash](bash/README.md)
 
 3. [gestion de liste d'élève](gestion_liste_eleve/main.py)
 
