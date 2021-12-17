@@ -44,6 +44,8 @@ choses" > texte.txt
 cat texte.txt
 ```
 
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/cat_command.PNG" />
+
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
 ## d) Créer une liste de répertoire contenu dans un fichier texte :
