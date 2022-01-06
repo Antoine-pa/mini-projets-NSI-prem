@@ -46,6 +46,24 @@ cat texte.txt
 
 <img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/cat_command.PNG" />
 
+#### commande grep :
+La commande grep permet de faire de la recherche de chaine de caractères
+L’utilisation générale de la commande grep se fait de la manière suivante :
+
+```sh
+grep [options] "recherche" [chaine de caractère ou fichier]
+```
+
+avec :
+- "recherche" la chaine de caractère à chercher
+- [chaine de caractère ou fichier] le document sur lequel portera la rechercher
+- [options] des options pour l'utilisation de la commande grep mais on ne l'utilisera pas
+
+
+```sh
+
+```
+
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
 ## d) Créer une liste de répertoire contenu dans un fichier texte :
