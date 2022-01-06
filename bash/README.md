@@ -75,9 +75,15 @@ avec :
 - [chaine de caractère ou fichier] le document sur lequel portera la commande
 - [options] les options pour l'utilisation de la commande wc. One utilisera l'option -l pour compter le nombre de ligne d'un document ou d'une chaine de caractère
 
-exemple :
+exemple :<image exemple wc>
 
-<img exemple wc>
+#### assemblage des commandes vus avant :
+
+La commande suivante va donc retourner les lignes dans lequelles aparaissent le mot "nsi" dans le fichier texte.txt (grep) et va compter ce nombre de ligne (wc)
+
+```sh
+grep "nsi" texte.txt | wc -l
+```
 
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
