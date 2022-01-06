@@ -60,7 +60,8 @@ avec :
 - [options] des options pour l'utilisation de la commande grep mais on ne l'utilisera pas
 
 exemple :
-<image exemple echo "" > fichier\ngrep "" fichier>
+
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/grep.PNG" />
 
 #### commande word count (wc) :
 
@@ -75,7 +76,9 @@ avec :
 - [chaine de caractère ou fichier] le document sur lequel portera la commande
 - [options] les options pour l'utilisation de la commande wc. One utilisera l'option -l pour compter le nombre de ligne d'un document ou d'une chaine de caractère
 
-exemple :<image exemple wc>
+exemple :
+
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/wc.PNG" />
 
 #### assemblage des commandes vus avant :
 
@@ -84,6 +87,8 @@ La commande suivante va donc retourner les lignes dans lequelles aparaissent le 
 ```sh
 grep "nsi" texte.txt | wc -l
 ```
+
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/count_nsi.PNG" />
 
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
