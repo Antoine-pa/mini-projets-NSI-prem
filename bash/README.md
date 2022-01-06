@@ -59,10 +59,25 @@ avec :
 - [chaine de caractère ou fichier] le document sur lequel portera la rechercher
 - [options] des options pour l'utilisation de la commande grep mais on ne l'utilisera pas
 
+exemple :
+<image exemple echo "" > fichier\ngrep "" fichier>
+
+#### commande word count (wc) :
+
+la commande wc est une commande qui permet de compter le nombre de lignes, mots et d'autres informations sur un fichier ou une chaine de caractère
+L’utilisation générale de la commande wc se fait de la manière suivante :
 
 ```sh
-
+wc [options] [chaine de caractère ou fichier]
 ```
+
+avec :
+- [chaine de caractère ou fichier] le document sur lequel portera la commande
+- [options] les options pour l'utilisation de la commande wc. One utilisera l'option -l pour compter le nombre de ligne d'un document ou d'une chaine de caractère
+
+exemple :
+
+<img exemple wc>
 
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
