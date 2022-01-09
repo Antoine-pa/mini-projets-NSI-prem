@@ -7,20 +7,20 @@
 ```sh
 mkdir dossier
 ```
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/mkdir_command.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/mkdir_command.PNG" />
 
 #### l'équivalent du range python en bash :
 ```
 range(1, 6) = seq 1 5
 ```
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/seq_command.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/seq_command.PNG" />
 
 #### commande pour créer les 100 dossiers :
 
 ```sh
 mkdir `seq 1 100`
 ```
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/mkdir_100.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/mkdir_100.PNG" />
 
 ## b) Afficher le nombre de ligne où apparaît un mot :
 
@@ -36,7 +36,7 @@ autre
 choses" > texte.txt
 ```
 
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/texte_txt.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/texte_txt.PNG" />
 
 #### commande d'affichage d'un contenu de fichier :
 
@@ -44,7 +44,7 @@ choses" > texte.txt
 cat texte.txt
 ```
 
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/cat_command.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/cat_command.PNG" />
 
 #### commande grep :
 La commande grep permet de faire de la recherche de chaine de caractères
@@ -61,7 +61,7 @@ avec :
 
 exemple :
 
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/grep.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/grep.PNG" />
 
 #### commande word count (wc) :
 
@@ -78,7 +78,7 @@ avec :
 
 exemple :
 
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/wc.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/wc.PNG" />
 
 #### assemblage des commandes vus avant :
 
@@ -88,7 +88,7 @@ La commande suivante va donc retourner les lignes dans lequelles aparaissent le 
 grep "nsi" texte.txt | wc -l
 ```
 
-<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/count_nsi.PNG" />
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/count_nsi.PNG" />
 
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
