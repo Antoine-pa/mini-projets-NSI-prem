@@ -1,6 +1,6 @@
 # *projet bash :*
 
-## a) Crérer 100 répertoires numérotés de 1 à 100 :
+## a) Créer 100 répertoires numérotés de 1 à 100 :
 
 #### commande pour créer un dossier :
 
@@ -92,4 +92,36 @@ grep "nsi" texte.txt | wc -l
 
 ## c) Afficher le nombre de fichier ou dossier contenue dans un dossier :
 
+#### commande tree :
+
+La commande `tree` permet d'afficher un arbre de l'arborescence d'un dossier.
+
+Pour cette question j'ai créé quelque dossier et fichier qu'on va afficher avec la commande `tree` :
+
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/tree_command.png" />
+
+La solution au problème posé serait de faire comme pour la question précédente et de compter le nombre de ligne de la sortie de la commande `tree `puisque qu'une ligne est égale à une fichier/dossier. Mais la sortie de la commande `tree` possède 3 lignes de trop qui nous sont inutiles. Il faudrait donc soustraire 3 à la sortie de la commande `tree | wc -l`.
+
+Bash est un langage un peu complexe pour l'execution de calculs. La solution pour palier à ce problème est la commande `expr`
+
+#### commande expr :
+
+La commande `expr` est une commande qui permet d'évaluer une expression donc dans notre cas, un calul entre une sortie d'une commande et un nombre (3)
+
+utilisation :
+
+```sh
+expr `tree | wc -l` - 3
+```
+
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/question_c.png" />
+
 ## d) Créer une liste de répertoire contenu dans un fichier texte :
+
+On utilise le même système qu'à la question a mais cette fois en utilisant le contenu d'un fichier. On va réutiliser le fichier texte.txt de la question b :
+
+```sh
+mkdir `cat texte.txt`
+```
+
+<img src="https://raw.githubusercontent.com/Antoine-pa/mini-projets-NSI/master/bash/images/question_d.png" />
