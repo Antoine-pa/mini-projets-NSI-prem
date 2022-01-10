@@ -15,3 +15,5 @@
 7. [norme IEEE](norme_IEEE/main.py)
 
 8. [additionneur complet et multiplication](additionneur/main.py)
+
+9. [bibliothèque de calcul python](creation_bibliotheque_python_de_calcul_1_11/main.py)
