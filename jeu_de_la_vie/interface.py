@@ -1,5 +1,5 @@
 import pygame
-from jeu_de_la_vie import *
+from core import *
 import time
 
 pygame.init()
