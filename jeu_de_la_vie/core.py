@@ -1,4 +1,4 @@
-def new_grid(len_x = 20, len_y = 10): #pour créer une nouvelle grille
+def new_grid(len_x, len_y): #pour créer une nouvelle grille
     grid = []
     for y in range(len_y):
         grid.append([])
@@ -25,7 +25,7 @@ def display_cli_grid(grid):
 
 
 def gen(old_grid): #pour faire une nouvelle génération de cellule
-    grid = new_grid()
+    grid = new_grid(len(old_grid[0]), len(old_grid))
     for y, line in enumerate(old_grid): #ligne par ligne
         for x, el in enumerate(line): #colonne par colonne
             nb_in_alive = 0 #nombre de cellules voisines en vie
