@@ -60,6 +60,10 @@ THICKNESS_SAVE = 2
 RECT_OPEN = (100, 710, 140, 32)
 THICKNESS_OPEN = 2
 
+#sauvegarder comme
+RECT_SAVE_AS = (100, 780, 140, 32)
+THICKNESS_SAVE_AS = 2
+
 #initialisation de la grille
 grid = new_grid(int(text_input_box_x), int(text_input_box_y))
 SPEED = float(text_speed)
@@ -202,6 +206,8 @@ quit_game = Box(RECT_QUIT, THICKNESS_QUIT, "Quitter")
 save_file = Box(RECT_SAVE, THICKNESS_SAVE, "Save")
 #Boutton pour ouvrir un  fichier
 open_file = Box(RECT_OPEN, THICKNESS_OPEN, "Open")
+
+save_as_file = Box(RECT_SAVE_AS, THICKNESS_SAVE_AS, "Save as")
 
 #Initialisation des variables pour la boucle infinie
 continuer = True
