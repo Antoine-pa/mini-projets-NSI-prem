@@ -7,6 +7,8 @@ import tkinter.filedialog
 
 pygame.init()
 
+PATH = None
+
 #Couleurs
 BLACK = (0, 0, 0)
 WHITE = (255, 230, 240)
@@ -99,12 +101,28 @@ def refresh(grid):
     pygame.display.update()
 
 def Save():
-    print("save")
+    if PATH is None:
+        path = Save_as()
+        return path
+    else:
+        with open(PATH, "w") as f:
+            f.write(json.dumps({"data":grid}, indent=4))
 
-def Open():    
+def Save_as():
     top = tkinter.Tk()
     top.withdraw()  # hide window
-    file_name = tkinter.filedialog.askopenfilename(parent=top)
+    file_name = tkinter.filedialog.asksaveasfilename(parent=top, filetypes=[('json files', '.json')])
+    if not file_name.endswith(".json"):
+        file_name += ".json"
+    top.destroy()
+    with open(file_name, "w") as f:
+        f.write(json.dumps({"data":grid}, indent=4))
+    return PATH
+
+def Open():
+    top = tkinter.Tk()
+    top.withdraw()  # hide window
+    file_name = tkinter.filedialog.askopenfilename(parent=top, filetypes=[('json files', '.json')])
     top.destroy()
     if file_name == "":
         return
@@ -116,7 +134,7 @@ def Open():
     for y in enumerate(data):
         for x in enumerate(y[1]):
             grid[y[0]][x[0]] = x[1]
-    return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y
+    return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y, file_name
 
 
 def update_settings_grid(x, y):
@@ -277,9 +295,13 @@ while continuer:
                 pygame.display.quit()
                 continuer = False
             elif save_file.collidepoint(event.pos):
-                Save()
+                output = Save()
+                if output is not None:
+                    PATH = output
             elif open_file.collidepoint(event.pos):
-                grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = Open()
+                output = Open()
+                if output is not None:
+                    grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y, PATH = output
                 refresh(grid)
             else:
                 active = None
