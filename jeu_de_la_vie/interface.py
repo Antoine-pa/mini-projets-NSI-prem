@@ -108,7 +108,7 @@ def update_settings_grid(x, y):
     NUMBER_COLUMN = len(grid[0])
     NUMBER_LINE = len(grid)
 
-    SPACE_X = WINDOW_X//NUMBER_COLUMN - THICKNESS
+    SPACE_X = WINDOW_X/NUMBER_COLUMN - THICKNESS
     SPACE_Y = WINDOW_Y//NUMBER_LINE - THICKNESS
 
     pygame.draw.rect(screen, BLACK, (SIZE_MENU_X, 0, SIZE_MENU_X + WINDOW_X, WINDOW_Y))
@@ -187,6 +187,7 @@ while continuer:
 
                 elif event.key == pygame.K_RETURN:
                     grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings_grid(int(text_input_box_x), int(text_input_box_y))
+                    Text(str(NUMBER_COLUMN), BLACK, pos_text(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X), SIZE_TEXT)
                     refresh(grid)
                 else:
                     el = event.unicode
