@@ -335,6 +335,8 @@ while continuer:
                 if output is not None:
                     grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y, PATH = output
                 refresh(grid)
+            elif save_as_file.collidepoint(event.pos):
+                PATH = Save_as()
             else:
                 active = None
 
