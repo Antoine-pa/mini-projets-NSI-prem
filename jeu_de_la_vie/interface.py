@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
-
 import pygame
 from core import *
 import time
+import json
+import tkinter
+import tkinter.filedialog
 
 pygame.init()
 
@@ -100,8 +101,23 @@ def refresh(grid):
 def Save():
     print("save")
 
-def Open():
-    print("open")
+def Open():    
+    top = tkinter.Tk()
+    top.withdraw()  # hide window
+    file_name = tkinter.filedialog.askopenfilename(parent=top)
+    top.destroy()
+    if file_name == "":
+        return
+    with open(file_name) as f:
+        data = json.load(f)
+        data = data.get("data")
+    text_input_box_x, text_input_box_y = str(len(data[0])), str(len(data))
+    grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings_grid(int(text_input_box_x), int(text_input_box_y))
+    for y in enumerate(data):
+        for x in enumerate(y[1]):
+            grid[y[0]][x[0]] = x[1]
+    return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y
+
 
 def update_settings_grid(x, y):
     grid = new_grid(x, y)
@@ -263,11 +279,10 @@ while continuer:
             elif save_file.collidepoint(event.pos):
                 Save()
             elif open_file.collidepoint(event.pos):
-                Open()
+                grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = Open()
+                refresh(grid)
             else:
                 active = None
-
-
 
     #Le jeu se lance
     if start_generation:
