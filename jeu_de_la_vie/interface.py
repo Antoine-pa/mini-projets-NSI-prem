@@ -7,6 +7,7 @@ import tkinter.filedialog
 
 pygame.init()
 
+#INITIALISATION DES VARIABLES---------------------------------------------------
 PATH = None
 
 #Couleurs
@@ -51,11 +52,11 @@ THICKNESS_SPEED = 2
 RECT_QUIT = (100, 570, 140, 32)
 THICKNESS_QUIT = 2
 
-#quit
+#sauvegarder
 RECT_SAVE = (100, 640, 140, 32)
 THICKNESS_SAVE = 2
 
-#quit
+#ouvrir
 RECT_OPEN = (100, 710, 140, 32)
 THICKNESS_OPEN = 2
 
@@ -78,28 +79,37 @@ NUMBER_LINE = len(grid)
 SPACE_X = WINDOW_X/NUMBER_COLUMN - THICKNESS
 SPACE_Y = WINDOW_Y/NUMBER_LINE - THICKNESS
 
+#-------------------------------------------------------------------------------
+
 #Initialisation de la fenêtre
 screen = pygame.display.set_mode((SIZE_MENU_X + WINDOW_X, WINDOW_Y))
 screen.fill(BLACK)
 
 pygame.draw.rect(screen, WHITE, (0, 0, SIZE_MENU_X - THICKNESS, WINDOW_Y - THICKNESS))
 
+#VARIABLES DIVERSES-------------------------------------------------------------
+
+#fonction pour supprimer du text
 def clear_text_box(box, thickness_box):
     pygame.draw.rect(screen, WHITE, pygame.Rect(box[0]+thickness_box, box[1]+thickness_box, box[2]-2*thickness_box, box[3]-2*thickness_box), 0)
 
+#fonction pour récuperer la position d'un text en fonction de sa boîte
 def pos_text(box, thickness_box):
     return (box[0]+thickness_box+3, box[1]+box[3]-thickness_box-SIZE_TEXT)
 
+#fonction pour afficher le titre d'une boîte
 def title_box(box, title):
     pos = (box[0], box[1]-SIZE_TEXT-2)
     Text(title, BLACK, pos, SIZE_TEXT)
 
+#fonction pour rafraichir le jeu
 def refresh(grid):
     for y in range(NUMBER_LINE):
         for x in range(NUMBER_COLUMN):
             pygame.draw.rect(screen, dic_grid_color[get_element(x, y, grid)], (SIZE_MENU_X+x*(SPACE_X+THICKNESS)+THICKNESS, y*(SPACE_Y+THICKNESS), SPACE_X, SPACE_Y))
     pygame.display.update()
 
+#fonction pour sauvegarder un fichier
 def Save():
     if PATH is None:
         path = Save_as()
@@ -108,6 +118,7 @@ def Save():
         with open(PATH, "w") as f:
             f.write(json.dumps({"data":grid}, indent=4))
 
+#fonction pour sauvegarder un fichier comme
 def Save_as():
     top = tkinter.Tk()
     top.withdraw()  # hide window
@@ -119,6 +130,7 @@ def Save_as():
         f.write(json.dumps({"data":grid}, indent=4))
     return PATH
 
+#fonction pour ouvrir un fichier
 def Open():
     top = tkinter.Tk()
     top.withdraw()  # hide window
@@ -136,7 +148,7 @@ def Open():
             grid[y[0]][x[0]] = x[1]
     return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y, file_name
 
-
+#fonction pour rafraichir les données
 def update_settings_grid(x, y):
     grid = new_grid(x, y)
     NUMBER_COLUMN = len(grid[0])
@@ -149,6 +161,7 @@ def update_settings_grid(x, y):
 
     return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y
 
+#fonction pour afficher un boutton ou une zone d'entrée avec tout ses texts
 def Box(coord, thickness, text, title=None):
     box = pygame.Rect(*coord)
     pygame.draw.rect(screen, BLACK, box, thickness)
@@ -157,37 +170,51 @@ def Box(coord, thickness, text, title=None):
         title_box(coord, title)
     return box
 
+#fonction pour afficher du text
 def Text(text, color, pos: tuple, size):
     FONT = pygame.font.Font("Melon Honey.ttf", size)
     screen.blit(FONT.render(text, True, color), pos)
     pygame.display.update()
     del FONT
-
-
+    
 refresh(grid)
 
-#init menu
+
+#INITIALISATION DU MENU---------------------------------------------------------
+
 Text("le jeu de la vie", BLACK, (40, 30), 40)
 
+#Champ d'entré des colonnes
 input_box_x = Box(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X, text_input_box_x, "Nombre de colonnes:")
+#Champ d'entré des lignes
 input_box_y = Box(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y, text_input_box_y, "Nombre de lignes:")
+#Champ d'entré de la vitesse
 input_speed =  Box(RECT_SPEED, THICKNESS_SPEED, text_speed, "Vitesse (s):")
-
+#Boutton pour effacer
 clear_grid = Box(RECT_CLEAR_GRID, THICKNESS_CLEAR_GRID, "Effacer")
+#Boutton pour mettre en pause
 stop_start_grid = Box(RECT_STOP_START, THICKNESS_STOP_START, "Start")
+#Boutton pour faire du step by step
 sbs_grid = Box(RECT_SBS, THICKNESS_SBS, "Step by step")
+#Boutton pour quitter
 quit_game = Box(RECT_QUIT, THICKNESS_QUIT, "Quitter")
+#Boutton pour sauvegarder
 save_file = Box(RECT_SAVE, THICKNESS_SAVE, "Save")
+#Boutton pour ouvrir un  fichier
 open_file = Box(RECT_OPEN, THICKNESS_OPEN, "Open")
 
-#Initialisation des variables
+#Initialisation des variables pour la boucle infinie
 continuer = True
 start_generation = False
 start_at = time.time()
+
+
 #Boucle infinie
 while continuer:
+    
     #Evénements
     for event in pygame.event.get():
+        
         #Quitter
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -205,20 +232,25 @@ while continuer:
             else:
                 pass
 
-
-        #Mettre en pause
+            
         if event.type == pygame.KEYUP:
-            if event.key == pygame.K_SPACE: #lancer le jeu
+            #Mettre en pause
+            if event.key == pygame.K_SPACE: 
                 start_generation = not start_generation
-
-            if event.key == pygame.K_ESCAPE: #quitter
+                
+            #quitter
+            if event.key == pygame.K_ESCAPE: 
                 pygame.display.quit()
                 continuer = False
-
+                
+            #si la zone de texte est cliquée
             if active == "input_box_x": #si il écrit dans la zone de texte
-                if event.key == pygame.K_BACKSPACE: #si il supp
+                
+                #supprimer
+                if event.key == pygame.K_BACKSPACE: 
                     text_input_box_x = text_input_box_x[:-1]
-
+                    
+                #valider
                 elif event.key == pygame.K_RETURN:
                     grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings_grid(int(text_input_box_x), int(text_input_box_y))
                     Text(str(NUMBER_COLUMN), BLACK, pos_text(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X), SIZE_TEXT)
