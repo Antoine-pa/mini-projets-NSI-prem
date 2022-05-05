@@ -200,7 +200,7 @@ def update_settings(x:float, y:float) -> tuple:
     pygame.draw.rect(screen, BLACK, (SIZE_MENU_X, 0, SIZE_MENU_X + WINDOW_X, WINDOW_Y))
     return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y
 
-#fonction pour afficher un boutton ou une zone d'entrée avec tout ses texts
+#fonction pour afficher un boutton ou une zone d'entrée avec tout ses textes
 def Box(coord:tuple, thickness:int, text:str, title=None):
     """
     fonction qui permet de créer une box dans le menu
@@ -286,7 +286,7 @@ while continuer:
             pygame.quit()
             continuer = False
 
-        #Remplacer les cases
+        #changer une case
         if pygame.mouse.get_pressed(num_buttons=3)[0]==True and start_generation == False:
             pos = list(pygame.mouse.get_pos())
             if pos[0] > SIZE_MENU_X and time.time() - last_click > 0.2:
@@ -298,10 +298,6 @@ while continuer:
                 pos[1] //= (SPACE_Y + THICKNESS)
                 grid = click(pos, grid)
                 refresh(grid)
-        if pygame.mouse.get_pressed(num_buttons=3)[2]==True and start_generation == False:
-            MOVE_VIRTUAL_GRID = [i+40 for i in MOVE_VIRTUAL_GRID]
-            pygame.draw.rect(screen, BLACK, (SIZE_MENU_X, 0, SIZE_MENU_X + WINDOW_X, WINDOW_Y))
-            refresh(grid)
 
         #Zoomer
         if event.type == pygame.MOUSEWHEEL:
@@ -345,6 +341,12 @@ while continuer:
             #Mettre en pause
             if event.key == pygame.K_SPACE:
                 start_generation = not start_generation
+                clear_text_box(RECT_STOP_START, THICKNESS_STOP_START)
+                if start_generation:
+                    text = "Stop"
+                else:
+                    text = "Start"
+                Text(text, BLACK, pos_text(RECT_STOP_START, THICKNESS_STOP_START), SIZE_TEXT)
 
             #quitter
             if event.key == pygame.K_ESCAPE:
@@ -442,6 +444,13 @@ while continuer:
                 output = Open()
                 if output is not None:
                     grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y, PATH = output
+                    text_input_box_x = str(NUMBER_COLUMN)
+                    text_input_box_y = str(NUMBER_LINE)
+                    clear_text_box(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X)
+                    Text(text_input_box_x, BLACK, pos_text(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X), SIZE_TEXT)
+                    clear_text_box(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y)
+                    Text(text_input_box_y, BLACK, pos_text(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y), SIZE_TEXT)
+                    pygame.display.update()
                 refresh(grid)
             elif save_as_file.collidepoint(event.pos):
                 PATH = Save_as()
