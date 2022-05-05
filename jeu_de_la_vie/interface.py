@@ -23,50 +23,54 @@ active = None
 
 #input box x
 text_input_box_x = "15"
-RECT_INPUT_BOX_X = (100, 150, 140, 32)
+RECT_INPUT_BOX_X = (80, 150, 140, 32)
 THICKNESS_INPUT_BOX_X = 2
 
 #input box y
 text_input_box_y = "10"
-RECT_INPUT_BOX_Y = (100, 220, 140, 32)
+RECT_INPUT_BOX_Y = (80, 220, 140, 32)
 THICKNESS_INPUT_BOX_Y = 2
 
 #clear grid
-RECT_CLEAR_GRID = (100, 290, 140, 32)
+RECT_CLEAR_GRID = (80, 290, 140, 32)
 THICKNESS_CLEAR_GRID = 2
 
 #stop/start
-RECT_STOP_START = (100, 360, 140, 32)
+RECT_STOP_START = (80, 360, 140, 32)
 THICKNESS_STOP_START = 2
 
 #step_by_step
-RECT_SBS = (100, 430, 140, 32)
+RECT_SBS = (80, 430, 140, 32)
 THICKNESS_SBS = 2
 
 #speed
 text_speed = "1"
-RECT_SPEED = (100, 500, 140, 32)
+RECT_SPEED = (80, 500, 140, 32)
 THICKNESS_SPEED = 2
 
 #quit
-RECT_QUIT = (100, 570, 140, 32)
+RECT_QUIT = (80, 570, 140, 32)
 THICKNESS_QUIT = 2
 
 #sauvegarder
-RECT_SAVE = (100, 640, 140, 32)
+RECT_SAVE = (80, 640, 140, 32)
 THICKNESS_SAVE = 2
 
 #ouvrir
-RECT_OPEN = (100, 710, 140, 32)
+RECT_OPEN = (80, 710, 140, 32)
 THICKNESS_OPEN = 2
 
 #sauvegarder comme
-RECT_SAVE_AS = (100, 780, 140, 32)
+RECT_SAVE_AS = (80, 780, 140, 32)
 THICKNESS_SAVE_AS = 2
 
 #initialisation de la grille
 grid = new_grid(int(text_input_box_x), int(text_input_box_y))
 SPEED = float(text_speed)
+
+#le zoom
+UNZOOM=0.1
+ZOOM=1
 
 #Dimensions
 screen_info = pygame.display.Info()
@@ -83,6 +87,8 @@ NUMBER_LINE = len(grid)
 SPACE_X = WINDOW_X/NUMBER_COLUMN - THICKNESS
 SPACE_Y = WINDOW_Y/NUMBER_LINE - THICKNESS
 
+POS_VIRTUAL_GRID = [[SIZE_MENU_X, screen_info.current_w], [0, screen_info.current_h]]
+MOVE_VIRTUAL_GRID = [0, 0]
 #-------------------------------------------------------------------------------
 
 #Initialisation de la fenêtre
@@ -90,83 +96,115 @@ screen = pygame.display.set_mode((SIZE_MENU_X + WINDOW_X, WINDOW_Y))
 screen.fill(BLACK)
 
 pygame.draw.rect(screen, WHITE, (0, 0, SIZE_MENU_X - THICKNESS, WINDOW_Y - THICKNESS))
-
 #VARIABLES DIVERSES-------------------------------------------------------------
 
 #fonction pour supprimer du text
-def clear_text_box(box, thickness_box):
+def clear_text_box(box:tuple, thickness_box:int) -> None:
     pygame.draw.rect(screen, WHITE, pygame.Rect(box[0]+thickness_box, box[1]+thickness_box, box[2]-2*thickness_box, box[3]-2*thickness_box), 0)
 
 #fonction pour récuperer la position d'un text en fonction de sa boîte
-def pos_text(box, thickness_box):
+def pos_text(box:tuple, thickness_box:int) -> tuple:
     return (box[0]+thickness_box+3, box[1]+box[3]-thickness_box-SIZE_TEXT)
 
 #fonction pour afficher le titre d'une boîte
-def title_box(box, title):
+def title_box(box:tuple, title:str) -> None:
     pos = (box[0], box[1]-SIZE_TEXT-2)
     Text(title, BLACK, pos, SIZE_TEXT)
 
 #fonction pour rafraichir le jeu
-def refresh(grid):
+def refresh(grid:list) -> None:
+    """
+    fonction qui permet de réafficher la grille
+    """
     for y in range(NUMBER_LINE):
         for x in range(NUMBER_COLUMN):
-            pygame.draw.rect(screen, dic_grid_color[get_element(x, y, grid)], (SIZE_MENU_X+x*(SPACE_X+THICKNESS)+THICKNESS, y*(SPACE_Y+THICKNESS), SPACE_X, SPACE_Y))
+            xstart = SIZE_MENU_X+x*(SPACE_X+THICKNESS)+THICKNESS
+            xstop = SPACE_X
+            ystart = y*(SPACE_Y+THICKNESS)
+            ystop = SPACE_Y
+            if POS_VIRTUAL_GRID[0][0]+MOVE_VIRTUAL_GRID[0] <= xstart+xstop <= POS_VIRTUAL_GRID[0][1]+MOVE_VIRTUAL_GRID[0]+xstop and POS_VIRTUAL_GRID[1][0]+MOVE_VIRTUAL_GRID[1] <= ystart+ystop <= POS_VIRTUAL_GRID[1][1]+MOVE_VIRTUAL_GRID[1]+ystop:
+                xstart = xstart-MOVE_VIRTUAL_GRID[0]
+                ystart = ystart-MOVE_VIRTUAL_GRID[1]
+                if xstart < SIZE_MENU_X:
+                    xstop -= SIZE_MENU_X - xstart
+                    xstart = SIZE_MENU_X
+                pygame.draw.rect(screen, dic_grid_color[get_element(x, y, grid)], (xstart, ystart, xstop, ystop))
     pygame.display.update()
 
 #fonction pour sauvegarder un fichier
-def Save():
-    if PATH is None:
-        path = Save_as()
-        return path
-    else:
-        with open(PATH, "w") as f:
-            f.write(json.dumps({"data":grid}, indent=4))
+def Save() -> None:
+    """
+    fonction qui permet de réenregistrer la grille dans le fichier
+    """
+    try:
+        if PATH is None:
+            path = Save_as()
+            return path
+        else:
+            with open(PATH, "w") as f:
+                f.write(json.dumps({"data":grid}, indent=4))
+    except: pass
 
 #fonction pour sauvegarder un fichier comme
-def Save_as():
-    top = tkinter.Tk()
-    top.withdraw()  # hide window
-    file_name = tkinter.filedialog.asksaveasfilename(parent=top, filetypes=[('json files', '.json')])
-    if not file_name.endswith(".json"):
-        file_name += ".json"
-    top.destroy()
-    with open(file_name, "w") as f:
-        f.write(json.dumps({"data":grid}, indent=4))
-    return PATH
+def Save_as() -> None:
+    """
+    fonction qui permet d'enregister dans un nouveau fichier la grille
+    """
+    try:
+        top = tkinter.Tk()
+        top.withdraw()  # hide window
+        file_name = tkinter.filedialog.asksaveasfilename(parent=top, filetypes=[('json files', '.json')])
+        if not file_name.endswith(".json"):
+            file_name += ".json"
+        top.destroy()
+        with open(file_name, "w") as f:
+            f.write(json.dumps({"data":grid}, indent=4))
+        return PATH
+    except: pass
 
 #fonction pour ouvrir un fichier
-def Open():
-    top = tkinter.Tk()
-    top.withdraw()  # hide window
-    file_name = tkinter.filedialog.askopenfilename(parent=top, filetypes=[('json files', '.json')])
-    top.destroy()
-    if file_name == "":
-        return
-    with open(file_name) as f:
-        data = json.load(f)
-        data = data.get("data")
-    text_input_box_x, text_input_box_y = str(len(data[0])), str(len(data))
-    grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings_grid(int(text_input_box_x), int(text_input_box_y))
-    for y in enumerate(data):
-        for x in enumerate(y[1]):
-            grid[y[0]][x[0]] = x[1]
-    return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y, file_name
+def Open() -> None:
+    """
+    fonction qui permet de charger une grille
+    """
+    try:
+        top = tkinter.Tk()
+        top.withdraw()  # hide window
+        file_name = tkinter.filedialog.askopenfilename(parent=top, filetypes=[('json files', '.json')])
+        top.destroy()
+        if file_name == "":
+            return
+        with open(file_name) as f:
+            data = json.load(f)
+            data = data.get("data")
+        text_input_box_x, text_input_box_y = str(len(data[0])), str(len(data))
+        grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings(int(text_input_box_x), int(text_input_box_y))
+        for y in enumerate(data):
+            for x in enumerate(y[1]):
+                grid[y[0]][x[0]] = x[1]
+        return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y, file_name
+    except: pass
 
 #fonction pour rafraichir les données
-def update_settings_grid(x, y):
+def update_settings(x:float, y:float) -> tuple:
+    """
+    fonction qui permet de recalculer les dimensions des éléments
+    """
     grid = new_grid(x, y)
     NUMBER_COLUMN = len(grid[0])
     NUMBER_LINE = len(grid)
 
     SPACE_X = WINDOW_X/NUMBER_COLUMN - THICKNESS
-    SPACE_Y = WINDOW_Y//NUMBER_LINE - THICKNESS
+    SPACE_Y = WINDOW_Y/NUMBER_LINE - THICKNESS
 
     pygame.draw.rect(screen, BLACK, (SIZE_MENU_X, 0, SIZE_MENU_X + WINDOW_X, WINDOW_Y))
-
     return grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y
 
 #fonction pour afficher un boutton ou une zone d'entrée avec tout ses texts
-def Box(coord, thickness, text, title=None):
+def Box(coord:tuple, thickness:int, text:str, title=None):
+    """
+    fonction qui permet de créer une box dans le menu
+    """
     box = pygame.Rect(*coord)
     pygame.draw.rect(screen, BLACK, box, thickness)
     Text(text, BLACK, pos_text(coord, thickness), SIZE_TEXT)
@@ -176,17 +214,38 @@ def Box(coord, thickness, text, title=None):
 
 #fonction pour afficher du text
 def Text(text, color, pos: tuple, size):
+    """
+    fonction pour afficher du text
+    """
     FONT = pygame.font.Font("Melon Honey.ttf", size)
     screen.blit(FONT.render(text, True, color), pos)
     pygame.display.update()
     del FONT
-    
+
+def CropMove():
+    """
+    fonction qui permet de ne pas se déplacer en dehors de la grille
+    """
+    if MOVE_VIRTUAL_GRID[0]+POS_VIRTUAL_GRID[0][1]-POS_VIRTUAL_GRID[0][0] > WINDOW_X:
+        MOVE_VIRTUAL_GRID[0] = WINDOW_X-(POS_VIRTUAL_GRID[0][1]-POS_VIRTUAL_GRID[0][0])
+
+    if not 0 < MOVE_VIRTUAL_GRID[0] < POS_VIRTUAL_GRID[0][1]-POS_VIRTUAL_GRID[0][0]-MOVE_VIRTUAL_GRID[0]:
+        MOVE_VIRTUAL_GRID[0] = 0
+
+    if MOVE_VIRTUAL_GRID[1]+POS_VIRTUAL_GRID[1][1]-POS_VIRTUAL_GRID[1][0] > WINDOW_Y:
+        MOVE_VIRTUAL_GRID[1] = WINDOW_Y-(POS_VIRTUAL_GRID[1][1]-POS_VIRTUAL_GRID[1][0])
+
+    if not 0 < MOVE_VIRTUAL_GRID[1] < POS_VIRTUAL_GRID[1][1]-POS_VIRTUAL_GRID[1][0]-MOVE_VIRTUAL_GRID[1]:
+        MOVE_VIRTUAL_GRID[1] = 0
+
+    return MOVE_VIRTUAL_GRID
+
 refresh(grid)
 
 
 #INITIALISATION DU MENU---------------------------------------------------------
 
-Text("le jeu de la vie", BLACK, (40, 30), 40)
+Text("le jeu de la vie", BLACK, (30, 30), 40)
 
 #Champ d'entré des colonnes
 input_box_x = Box(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X, text_input_box_x, "Nombre de colonnes:")
@@ -213,52 +272,95 @@ save_as_file = Box(RECT_SAVE_AS, THICKNESS_SAVE_AS, "Save as")
 continuer = True
 start_generation = False
 start_at = time.time()
+last_click = time.time()
 
 
 #Boucle infinie
 while continuer:
-    
+
     #Evénements
     for event in pygame.event.get():
-        
+
         #Quitter
         if event.type == pygame.QUIT:
             pygame.quit()
             continuer = False
 
         #Remplacer les cases
-        if event.type == pygame.MOUSEBUTTONUP and start_generation == False:
+        if pygame.mouse.get_pressed(num_buttons=3)[0]==True and start_generation == False:
             pos = list(pygame.mouse.get_pos())
-            if pos[0] > SIZE_MENU_X:
+            if pos[0] > SIZE_MENU_X and time.time() - last_click > 0.2:
+                last_click = time.time()
                 pos[0] -= SIZE_MENU_X
-                pos[0] //= SPACE_X + THICKNESS
-                pos[1] //= SPACE_Y + THICKNESS
+                pos[0] += MOVE_VIRTUAL_GRID[0]
+                pos[1] += MOVE_VIRTUAL_GRID[1]
+                pos[0] //= (SPACE_X + THICKNESS)
+                pos[1] //= (SPACE_Y + THICKNESS)
                 grid = click(pos, grid)
                 refresh(grid)
-            else:
-                pass
+        if pygame.mouse.get_pressed(num_buttons=3)[2]==True and start_generation == False:
+            MOVE_VIRTUAL_GRID = [i+40 for i in MOVE_VIRTUAL_GRID]
+            pygame.draw.rect(screen, BLACK, (SIZE_MENU_X, 0, SIZE_MENU_X + WINDOW_X, WINDOW_Y))
+            refresh(grid)
 
-            
+        #Zoomer
+        if event.type == pygame.MOUSEWHEEL:
+            pos = list(pygame.mouse.get_pos())
+            if pos[0] > SIZE_MENU_X  :
+
+                if ZOOM+event.y/10>=1: #zoom
+                    WINDOW_X *= 1.1
+                    WINDOW_Y *= 1.1
+                else: #dezoom
+                    WINDOW_X /= 1.1
+                    WINDOW_Y /= 1.1
+                if WINDOW_X < POS_VIRTUAL_GRID[0][1]-POS_VIRTUAL_GRID[0][0]: #limite de dezoom
+                    WINDOW_X = POS_VIRTUAL_GRID[0][1]-POS_VIRTUAL_GRID[0][0]
+                    WINDOW_Y = POS_VIRTUAL_GRID[1][1]-POS_VIRTUAL_GRID[1][0]
+                SPACE_X = WINDOW_X/NUMBER_COLUMN - THICKNESS
+                SPACE_Y = WINDOW_Y/NUMBER_LINE - THICKNESS
+                MOVE_VIRTUAL_GRID = CropMove() #on recalcul la section affichée
+                pygame.draw.rect(screen, BLACK, (SIZE_MENU_X, 0, POS_VIRTUAL_GRID[0][1], POS_VIRTUAL_GRID[1][1]))
+                refresh(grid)
+
+
         if event.type == pygame.KEYUP:
+
+            #déplacement
+            if event.key in (pygame.K_LEFT, pygame.K_UP, pygame.K_RIGHT, pygame.K_DOWN):
+                if event.key == pygame.K_LEFT:
+                    MOVE_VIRTUAL_GRID[0] -=40
+                if event.key == pygame.K_UP:
+                    MOVE_VIRTUAL_GRID[1] -= 40
+                if event.key == pygame.K_RIGHT:
+                    MOVE_VIRTUAL_GRID[0] += 40
+                if event.key == pygame.K_DOWN:
+                    MOVE_VIRTUAL_GRID[1] += 40
+
+                MOVE_VIRTUAL_GRID = CropMove()
+
+                pygame.draw.rect(screen, BLACK, (SIZE_MENU_X, 0, SIZE_MENU_X + WINDOW_X, WINDOW_Y))
+                refresh(grid)
+
             #Mettre en pause
-            if event.key == pygame.K_SPACE: 
+            if event.key == pygame.K_SPACE:
                 start_generation = not start_generation
-                
+
             #quitter
-            if event.key == pygame.K_ESCAPE: 
+            if event.key == pygame.K_ESCAPE:
                 pygame.display.quit()
                 continuer = False
-                
+
             #si la zone de texte est cliquée
             if active == "input_box_x": #si il écrit dans la zone de texte
-                
+
                 #supprimer
-                if event.key == pygame.K_BACKSPACE: 
+                if event.key == pygame.K_BACKSPACE:
                     text_input_box_x = text_input_box_x[:-1]
-                    
+
                 #valider
                 elif event.key == pygame.K_RETURN:
-                    grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings_grid(int(text_input_box_x), int(text_input_box_y))
+                    grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings(int(text_input_box_x), int(text_input_box_y))
                     Text(str(NUMBER_COLUMN), BLACK, pos_text(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X), SIZE_TEXT)
                     refresh(grid)
                 else:
@@ -276,7 +378,7 @@ while continuer:
                     text_input_box_y = text_input_box_y[:-1]
 
                 elif event.key == pygame.K_RETURN:
-                    grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings_grid(int(text_input_box_x), int(text_input_box_y))
+                    grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings(int(text_input_box_x), int(text_input_box_y))
                     refresh(grid)
                 else:
                     el = event.unicode
