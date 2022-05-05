@@ -9,10 +9,10 @@ def new_grid(len_x, len_y): #pour créer une nouvelle grille
 
 def get_element(x, y, grid): #pour récupérer un élément
 
-    return grid[y][x]
+    return grid[round(y)][round(x)]
 
 def set_element(x, y, value, grid): #pour enregister un élément
-    grid[y][x] = value
+    grid[round(y)][round(x)] = value
     return grid
 
 def click(coord : tuple, grid):
