@@ -64,8 +64,10 @@ THICKNESS_OPEN = 2
 RECT_SAVE_AS = (80, 780, 140, 32)
 THICKNESS_SAVE_AS = 2
 
+
 #initialisation de la grille
 grid = new_grid(int(text_input_box_x), int(text_input_box_y))
+old_grid = []
 SPEED = float(text_speed)
 
 #Dimensions
@@ -85,6 +87,9 @@ SPACE_Y = WINDOW_Y/NUMBER_LINE - THICKNESS
 
 POS_VIRTUAL_GRID = [[SIZE_MENU_X, screen_info.current_w], [0, screen_info.current_h]]
 MOVE_VIRTUAL_GRID = [0, 0]
+
+POS_GENERATION = (20, WINDOW_Y-40)
+GENERATION = 0
 #-------------------------------------------------------------------------------
 
 #Initialisation de la fenêtre
@@ -237,6 +242,11 @@ def CropMove():
 
     return MOVE_VIRTUAL_GRID
 
+def refresh_text_gen():
+    pygame.draw.rect(screen, WHITE, pygame.Rect(POS_GENERATION[0], POS_GENERATION[1], POS_GENERATION[0]+SIZE_MENU_X-50, 20), 0)
+    Text(f"generation {GENERATION}", BLACK, POS_GENERATION, 20)
+
+
 refresh(grid)
 
 
@@ -262,8 +272,13 @@ quit_game = Box(RECT_QUIT, THICKNESS_QUIT, "Quitter")
 save_file = Box(RECT_SAVE, THICKNESS_SAVE, "Save")
 #Boutton pour ouvrir un  fichier
 open_file = Box(RECT_OPEN, THICKNESS_OPEN, "Open")
-
+#Boutton pour enregister sous un  fichier
 save_as_file = Box(RECT_SAVE_AS, THICKNESS_SAVE_AS, "Save as")
+
+
+Text(f"generation {GENERATION}", BLACK, POS_GENERATION, 20)
+
+
 
 #Initialisation des variables pour la boucle infinie
 continuer = True
@@ -372,6 +387,8 @@ while continuer:
                 if event.key != pygame.K_RETURN:
                     clear_text_box(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X)
                     Text(text_input_box_x, BLACK, pos_text(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X), SIZE_TEXT)
+                    GENERATION = 0
+                    refresh_text_gen()
                     pygame.display.update()
 
 
@@ -390,6 +407,8 @@ while continuer:
                 if event.key != pygame.K_RETURN:
                     clear_text_box(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y)
                     Text(text_input_box_y, BLACK, pos_text(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y), SIZE_TEXT)
+                    GENERATION = 0
+                    refresh_text_gen()
                     pygame.display.update()
 
 
@@ -427,6 +446,8 @@ while continuer:
             elif clear_grid.collidepoint(event.pos):
                 grid = new_grid(NUMBER_COLUMN, NUMBER_LINE)
                 refresh(grid)
+                GENERATION = 0
+                refresh_text_gen()
             #start/stop
             elif stop_start_grid.collidepoint(event.pos):
                 start_generation = not start_generation
@@ -460,6 +481,8 @@ while continuer:
                     Text(text_input_box_x, BLACK, pos_text(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X), SIZE_TEXT)
                     clear_text_box(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y)
                     Text(text_input_box_y, BLACK, pos_text(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y), SIZE_TEXT)
+                    GENERATION = 0
+                    refresh_text_gen()
                     pygame.display.update()
                 refresh(grid)
             #sauvegarder comme
@@ -474,9 +497,19 @@ while continuer:
         t = time.time()-start_at
         if t>SPEED:
             start_at = time.time()
+            old_grid = grid
             grid = gen(grid)
-            refresh(grid)
-            pygame.display.update()
+            if old_grid != grid:
+                GENERATION += 1
+                refresh(grid)
+                refresh_text_gen()
+                pygame.display.update()
+            else:
+                start_generation = False
+                clear_text_box(RECT_STOP_START, THICKNESS_STOP_START)
+                text = "Start"
+                Text(text, BLACK, pos_text(RECT_STOP_START, THICKNESS_STOP_START), SIZE_TEXT)
+
 
 
 pygame.quit()
