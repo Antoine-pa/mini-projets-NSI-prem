@@ -68,10 +68,6 @@ THICKNESS_SAVE_AS = 2
 grid = new_grid(int(text_input_box_x), int(text_input_box_y))
 SPEED = float(text_speed)
 
-#le zoom
-UNZOOM=0.1
-ZOOM=1
-
 #Dimensions
 screen_info = pygame.display.Info()
 THICKNESS = 3
@@ -96,6 +92,7 @@ screen = pygame.display.set_mode((SIZE_MENU_X + WINDOW_X, WINDOW_Y))
 screen.fill(BLACK)
 
 pygame.draw.rect(screen, WHITE, (0, 0, SIZE_MENU_X - THICKNESS, WINDOW_Y - THICKNESS))
+
 #VARIABLES DIVERSES-------------------------------------------------------------
 
 #fonction pour supprimer du text
@@ -354,7 +351,7 @@ while continuer:
                 continuer = False
 
             #si la zone de texte est cliquée
-            if active == "input_box_x": #si il écrit dans la zone de texte
+            if active == "input_box_x":
 
                 #supprimer
                 if event.key == pygame.K_BACKSPACE:
@@ -365,6 +362,8 @@ while continuer:
                     grid, NUMBER_COLUMN, NUMBER_LINE, SPACE_X, SPACE_Y = update_settings(int(text_input_box_x), int(text_input_box_y))
                     Text(str(NUMBER_COLUMN), BLACK, pos_text(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X), SIZE_TEXT)
                     refresh(grid)
+
+                #afficher le nouveau texte
                 else:
                     el = event.unicode
                     if el.isdigit():
@@ -375,8 +374,9 @@ while continuer:
                     Text(text_input_box_x, BLACK, pos_text(RECT_INPUT_BOX_X, THICKNESS_INPUT_BOX_X), SIZE_TEXT)
                     pygame.display.update()
 
-            elif active == "input_box_y": #si il écrit dans la zone de texte
-                if event.key == pygame.K_BACKSPACE: #si il supp
+
+            elif active == "input_box_y":
+                if event.key == pygame.K_BACKSPACE:
                     text_input_box_y = text_input_box_y[:-1]
 
                 elif event.key == pygame.K_RETURN:
@@ -392,8 +392,9 @@ while continuer:
                     Text(text_input_box_y, BLACK, pos_text(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y), SIZE_TEXT)
                     pygame.display.update()
 
-            elif active == "input_speed": #si il écrit dans la zone de texte
-                if event.key == pygame.K_BACKSPACE: #si il supp
+
+            elif active == "input_speed":
+                if event.key == pygame.K_BACKSPACE:
                     text_speed = text_speed[:-1]
 
                 elif event.key == pygame.K_RETURN:
@@ -411,18 +412,23 @@ while continuer:
                     pygame.display.update()
 
 
-
+        #regarde si les boîtes de texte ou les boutons sont cliquées
         if event.type == pygame.MOUSEBUTTONUP:
+            #colonnes
             if input_box_x.collidepoint(event.pos):
                 active = "input_box_x"
+            #ligne
             elif input_box_y.collidepoint(event.pos):
                 active = "input_box_y"
+            #vitesse
             elif input_speed.collidepoint(event.pos):
                 active = "input_speed"
+            #effacer
             elif clear_grid.collidepoint(event.pos):
                 grid = new_grid(NUMBER_COLUMN, NUMBER_LINE)
                 refresh(grid)
-            elif stop_start_grid.collidepoint(event.pos): #lancer le jeu
+            #start/stop
+            elif stop_start_grid.collidepoint(event.pos):
                 start_generation = not start_generation
                 clear_text_box(RECT_STOP_START, THICKNESS_STOP_START)
                 if start_generation:
@@ -430,16 +436,20 @@ while continuer:
                 else:
                     text = "Start"
                 Text(text, BLACK, pos_text(RECT_STOP_START, THICKNESS_STOP_START), SIZE_TEXT)
+            #step by step
             elif sbs_grid.collidepoint(event.pos):
                 grid = gen(grid)
                 refresh(grid)
+            #quitter
             elif quit_game.collidepoint(event.pos):
                 pygame.display.quit()
                 continuer = False
+            #sauvegarder
             elif save_file.collidepoint(event.pos):
                 output = Save()
                 if output is not None:
                     PATH = output
+            #ouvrir
             elif open_file.collidepoint(event.pos):
                 output = Open()
                 if output is not None:
@@ -452,8 +462,10 @@ while continuer:
                     Text(text_input_box_y, BLACK, pos_text(RECT_INPUT_BOX_Y, THICKNESS_INPUT_BOX_Y), SIZE_TEXT)
                     pygame.display.update()
                 refresh(grid)
+            #sauvegarder comme
             elif save_as_file.collidepoint(event.pos):
                 PATH = Save_as()
+            #sinon rien ne se passe
             else:
                 active = None
 
