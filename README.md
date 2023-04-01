@@ -1,6 +1,6 @@
 # *Minis projets de NSI*
 
-1. [jeu de la vie](jeu_de_la_vie/main.py) (projet le plus travaillé)
+1. [jeu de la vie](jeu_de_la_vie/interface.py) (projet le plus travaillé)
 
 2. [bibliothèque de conversion](bibliotheque_conversion/main.py)
 
